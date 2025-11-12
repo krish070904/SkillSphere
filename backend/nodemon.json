@@ -1,0 +1,8 @@
+{
+  "watch": ["server.js", "config/**/*.js", "routes/**/*.js", "controllers/**/*.js"],
+  "ignore": ["node_modules", "frontend", ".git", ".env", "package-lock.json"],
+  "ext": "js,json",
+  "exec": "node server.js",
+  "legacyWatch": true,
+  "delay": "1000ms"
+}
