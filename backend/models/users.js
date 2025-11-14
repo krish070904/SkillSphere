@@ -17,7 +17,7 @@ const userSchema = new Schema({
   },
   password: {
     type: String,   
-    minlength: 6, // no two users can have the same email
+    minlength: 6, 
     required: true,
   },
   skills: {
@@ -31,16 +31,16 @@ const userSchema = new Schema({
 
 userSchema.pre('save', async function(next) {
   try {
-    // Check if the password has been modified
+    
     if (!this.isModified('password')) return next();
     
-    // Generate a salt and hash the password
+   
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
     
-    next(); // Proceed to save
+    next(); 
   } catch (error) {
-    next(error); // Pass any errors to the next middleware
+    next(error); 
   }
 });
 export default mongoose.model("User", userSchema);
