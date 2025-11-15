@@ -8,10 +8,10 @@ dotenv.config();
 export const registerUser = async (req, res) => {
   try {
     const { name, email, password, skills } = req.body;
-    if (!name || !email || !password || !skills || skills.length === 0) {
+    if (!name || !email || !password || !skills || !Array.isArray(skills) || skills.length === 0) {
       return res.status(400).json({ message: "All fields required" });
     }
-    const exists = await User.findOne({ email });
+    const exists = await User.findOne({email: email.toLowerCase().trim()});
     if (exists) {
       return res.status(400).json({ message: "User exists" });
     }
@@ -37,7 +37,7 @@ export const registerUser = async (req, res) => {
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: email.toLowerCase().trim() });
     if (!user) {
       return res.status(401).json({ message: "Invalid credentials" });
     }

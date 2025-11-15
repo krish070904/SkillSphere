@@ -11,9 +11,8 @@ const protect = async(req, res, next) =>{
     if (req.headers.authorization?.startsWith("Bearer")) {
      token = req.headers.authorization.split(" ")[1];
     }
-    else{
-        return res.status(401).json({ message:"Bearer <token> format error"});
-    }
+    if (!token) return res.status(401).json({ message: "No token provided" });
+
     try{
         decoded = jwt.verify(token, process.env.JWT_SECRET)
     }

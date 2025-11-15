@@ -8,10 +8,12 @@ const postSchema = new Schema(
     title: {
       type: String,
       required: true,
+      maxlength: 200,
     },
 
     description: {
       type: String,
+      trim: true,
     },
     category: {
       type: String,
