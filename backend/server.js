@@ -1,6 +1,7 @@
 console.clear();
 console.log("♻️ Restarting server...");
-import userRoutes from "./routes/userRoutes.js"
+import userRoutes from "./routes/userRoutes.js";
+import postRoutes from "./routes/postRoutes.js";
 import express from "express";
 import dotenv from "dotenv";
 import morgan from "morgan";
@@ -16,6 +17,8 @@ app.use(morgan("dev"));
 connectDB();
 
 app.use("/api/users", userRoutes);
+app.use("/api/posts", postRoutes)
+
 // Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
