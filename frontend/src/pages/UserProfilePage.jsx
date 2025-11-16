@@ -15,7 +15,7 @@
     useEffect(() => {
       if (!profileId) return;
 
-      //using it for fetching profile by id
+      //using it for fetching profile by id 
       const fetchProfile = async () => {
         setLoading(true);
         try {

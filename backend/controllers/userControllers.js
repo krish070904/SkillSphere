@@ -83,13 +83,29 @@ export const getUserById = async (req, res) => {
     const user = await User.findById(userId).select("-password");
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    // Get user's posts
-    const posts = await Post.find({ createdBy: userId });
+    // Get user's posts and populate creator
+    const posts = await Post.find({ createdBy: userId })
+      .populate("createdBy", "name email")
+      .populate("comments.user", "name email")
+      .lean();
 
-    // Check if the current logged-in user follows this profile
+    const formattedPosts = posts.map((eachPost) => ({
+      _id: eachPost._id,
+      title: eachPost.title,
+      description: eachPost.description,
+      category: eachPost.category,
+      createdBy: {
+        name: eachPost.createdBy?.name,
+        email: eachPost.createdBy?.email,
+      },
+      likeCount: eachPost.likes?.length || 0,
+      commentCount: eachPost.comments?.length || 0,
+      createdAt: eachPost.createdAt,
+    }));
+
     const isFollowing = req.user ? user.followers.includes(req.user.id) : false;
 
-    res.json({ user, posts, isFollowing });
+    res.json({ user, posts: formattedPosts, isFollowing });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
